@@ -1,1 +1,1 @@
-# ykssayaci2
+# ykssayaci.com sitesinin kodu.
