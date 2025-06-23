@@ -3,8 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="2026 YKS için sade ve işlevsel bir geri sayım sayacı.">
   <title>YKS Sayacı</title>
-
+  <link rel="icon" type="image/x-icon" href="favicon-dark.ico" />
   <style>
     body {
       margin: 0;
@@ -102,6 +103,13 @@
         margin-top: 20px;
       }
 
+      .countdown {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        justify-items: center;
+      }
+
       .time-value {
         font-size: 2rem;
       }
@@ -143,7 +151,7 @@
     </div>
   </div>
 
-  <div class="quote">"Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız."</div>
+  <div class="quote" id="quote-box">"Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız."</div>
 
   <script>
     const d = document;
@@ -196,7 +204,19 @@
       const current = body.classList.contains("dark") ? "dark" : "light";
       icon.textContent = current === "dark" ? "☀️" : "🌙";
     }
+
+    // Motivational quotes
+    const quotes = [
+      "Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız.",
+      "Düşünmek kolaydır, yapmak zordur. Ama en zoru düşündüğünü eyleme geçirmektir.",
+      "Sınavdan korkma, hazırlıksızlıktan kork.",
+      "Bugünün işini yarına bırakma, çünkü sınav tarihi ertelenmez.",
+      "İmkansız, yalnızca zaman alan bir kelimedir."
+    ];
+    const quoteBox = document.getElementById("quote-box");
+    quoteBox.textContent = quotes[Math.floor(Math.random() * quotes.length)];
   </script>
 </body>
 </html>
+
 
