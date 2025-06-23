@@ -1,19 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8L6R291RM"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() { dataLayer.push(arguments); }
-    gtag('js', new Date());
-    gtag('config', 'G-Q8L6R291RM');
-  </script>
-
-  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
-  <link rel="icon" type="image/x-icon" href="favicon2.ico" />
-  <meta name="keywords" content="YKS 2026, YKS geri sayım, TYT 2026, AYT 2026, sınav sayaç, YKS sayaç, YKS sayacı, TYT sayacı, AYT sayacı, sınava ne kadar kaldı, YKS ne zaman, tyt ayt ne zaman, YKS 2026 ne zaman, TYT 2026 ne zaman, AYT tarihi, üniversite sınavı 2026, yks tarihi 2026, sınav geri sayım, çalışmaya ne zaman başlamalı, sınava kalan süre, sınav stres yönetimi, motivasyon YKS, üniversite hazırlık 2026">
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>YKS Sayacı</title>
@@ -23,62 +10,169 @@
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       text-align: center;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark {
+      background: linear-gradient(135deg, #111111, #1b1b1b);
+      color: white;
+    }
+
+    body.light {
+      background: linear-gradient(135deg, #eeeeee, #cccccc);
+      color: #222;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 1rem;
+      font-size: 2.2rem;
+      margin-bottom: 2rem;
+      margin-top: 40px;
     }
 
-    #countdown {
-      font-size: 2rem;
-      font-weight: bold;
+    .countdown {
+      display: flex;
+      gap: 24px;
       margin-bottom: 2rem;
+    }
+
+    .time-block {
+      background-color: #222;
+      padding: 24px 16px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px #0004;
+      min-width: 80px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.light .time-block {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .time-value {
+      font-size: 2.6rem;
+      font-weight: bold;
+    }
+
+    .time-label {
+      font-size: 1rem;
+      opacity: 0.8;
+      margin-top: 6px;
     }
 
     .quote {
       font-size: 1.2rem;
       font-style: italic;
       opacity: 0.8;
+      max-width: 500px;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      padding: 6px 12px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      font-size: 1rem;
+      user-select: none;
+    }
+
+    .theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
 <body>
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <span>Tema</span>
+    <span id="theme-icon">🌙</span>
+  </div>
+
   <h1>YKS 2026'ya Kalan Süre</h1>
-  <div id="countdown">Yükleniyor...</div>
+  <div class="countdown">
+    <div class="time-block">
+      <div class="time-value" id="days">--</div>
+      <div class="time-label">Gün</div>
+    </div>
+    <div class="time-block">
+      <div class="time-value" id="hours">--</div>
+      <div class="time-label">Saat</div>
+    </div>
+    <div class="time-block">
+      <div class="time-value" id="minutes">--</div>
+      <div class="time-label">Dakika</div>
+    </div>
+    <div class="time-block">
+      <div class="time-value" id="seconds">--</div>
+      <div class="time-label">Saniye</div>
+    </div>
+  </div>
+
   <div class="quote">"Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız."</div>
 
   <script>
-    const countdownElement = document.getElementById('countdown');
-    const examDate = new Date('2026-06-20T09:00:00');
+    const d = document;
+    const countdown = {
+      days: d.getElementById("days"),
+      hours: d.getElementById("hours"),
+      minutes: d.getElementById("minutes"),
+      seconds: d.getElementById("seconds"),
+    };
+    const examDate = new Date("2026-06-20T09:00:00");
 
     function updateCountdown() {
       const now = new Date();
       const diff = examDate - now;
 
       if (diff <= 0) {
-        countdownElement.innerText = 'Sınav başladı!';
+        countdown.days.textContent = countdown.hours.textContent =
+        countdown.minutes.textContent = countdown.seconds.textContent = "00";
         return;
       }
 
-      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-      const minutes = Math.floor((diff / (1000 * 60)) % 60);
-      const seconds = Math.floor((diff / 1000) % 60);
-
-      countdownElement.innerText = `${days} gün ${hours} saat ${minutes} dakika ${seconds} saniye`;
+      countdown.days.textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
+      countdown.hours.textContent = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      countdown.minutes.textContent = Math.floor((diff / (1000 * 60)) % 60);
+      countdown.seconds.textContent = Math.floor((diff / 1000) % 60);
     }
 
     setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    // Theme toggle logic
+    const icon = document.getElementById("theme-icon");
+    const body = document.body;
+    if (!localStorage.getItem("theme")) {
+      localStorage.setItem("theme", "dark");
+    }
+    body.classList.add(localStorage.getItem("theme"));
+    updateIcon();
+
+    function toggleTheme() {
+      const current = body.classList.contains("dark") ? "dark" : "light";
+      const next = current === "dark" ? "light" : "dark";
+      body.classList.remove(current);
+      body.classList.add(next);
+      localStorage.setItem("theme", next);
+      updateIcon();
+    }
+
+    function updateIcon() {
+      const current = body.classList.contains("dark") ? "dark" : "light";
+      icon.textContent = current === "dark" ? "☀️" : "🌙";
+    }
   </script>
 </body>
 </html>
