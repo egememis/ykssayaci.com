@@ -4,20 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description" content="2026 YKS için sade ve işlevsel bir geri sayım sayacı.">
+  <meta property="og:title" content="YKS Sayacı 2026 | Geri Sayım Aracı">
+  <meta property="og:description" content="2026 YKS sınavı için sade, mobil uyumlu ve hızlı bir geri sayım sayacı.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ykssayaci.com">
+  <meta property="og:image" content="https://ykssayaci.com/og-image.png">
   <title>YKS Sayacı</title>
   <link rel="icon" type="image/x-icon" href="favicon-dark.ico" />
   <style>
-    body {
+    html, body {
       margin: 0;
       padding: 0;
       font-family: 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
       text-align: center;
       transition: background 0.3s ease, color 0.3s ease;
+      scroll-behavior: smooth;
     }
 
     body.dark {
@@ -28,6 +29,74 @@
     body.light {
       background: linear-gradient(135deg, #eeeeee, #cccccc);
       color: #222;
+    }
+
+    .menu-toggle, .theme-toggle {
+      position: absolute;
+      top: 20px;
+      padding: 8px 16px;
+      border-radius: 16px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: background-color 0.3s ease;
+    }
+
+    .menu-toggle {
+      left: 20px;
+      color: inherit;
+    }
+
+    .theme-toggle {
+      right: 20px;
+      user-select: none;
+    }
+
+    .theme-toggle:hover, .menu-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .menu-panel {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      height: 100%;
+      width: 250px;
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(4px);
+      padding: 60px 20px;
+      box-shadow: 4px 0 12px rgba(0,0,0,0.3);
+      transition: left 0.3s ease;
+      display: none;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 1000;
+    }
+
+    .menu-panel.open {
+      left: 0;
+      display: flex;
+    }
+
+    .menu-panel a {
+      color: inherit;
+      text-decoration: none;
+      padding: 10px 0;
+      font-weight: bold;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     h1 {
@@ -77,81 +146,100 @@
       margin: 0 16px;
     }
 
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
+    .faq {
+      max-width: 900px;
+      margin: 4rem auto 2rem;
+      padding: 0 1rem;
       display: flex;
-      align-items: center;
-      gap: 8px;
-      background-color: rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      padding: 6px 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+    }
+
+    .faq details {
+      background-color: #444;
+      border-radius: 12px;
+      padding: 1.5rem;
+      flex: 1 1 300px;
+      color: white;
+      text-align: center;
+    }
+
+    body.light .faq details {
+      background-color: #ddd;
+      color: #000;
+    }
+
+    .faq summary {
+      font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .faq p {
+      margin: 0.5rem 0 0;
       font-size: 1rem;
-      user-select: none;
-    }
-
-    .theme-toggle:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
-
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 1.8rem;
-        margin-top: 20px;
-      }
-
-      .countdown {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 16px;
-        justify-items: center;
-      }
-
-      .time-value {
-        font-size: 2rem;
-      }
-
-      .time-label {
-        font-size: 0.9rem;
-      }
-
-      .time-block {
-        padding: 16px 12px;
-        min-width: 70px;
-      }
+      line-height: 1.6;
     }
   </style>
 </head>
 <body>
+  <button class="menu-toggle" onclick="toggleMenu()">Araçlar</button>
+  <div class="menu-panel" id="menu">
+    <a href="#">Placeholder 1</a>
+    <a href="#">Placeholder 2</a>
+    <a href="#">Placeholder 3</a>
+    <a href="#">Placeholder 4</a>
+    <a href="#">Placeholder 5</a>
+  </div>
+
   <div class="theme-toggle" onclick="toggleTheme()">
     <span>Tema</span>
     <span id="theme-icon">🌙</span>
   </div>
 
-  <h1>YKS 2026'ya Kalan Süre</h1>
-  <div class="countdown">
-    <div class="time-block">
-      <div class="time-value" id="days">--</div>
-      <div class="time-label">Gün</div>
+  <div class="hero">
+    <h1>YKS 2026'ya Kalan Süre</h1>
+    <div class="countdown">
+      <div class="time-block">
+        <div class="time-value" id="days">--</div>
+        <div class="time-label">Gün</div>
+      </div>
+      <div class="time-block">
+        <div class="time-value" id="hours">--</div>
+        <div class="time-label">Saat</div>
+      </div>
+      <div class="time-block">
+        <div class="time-value" id="minutes">--</div>
+        <div class="time-label">Dakika</div>
+      </div>
+      <div class="time-block">
+        <div class="time-value" id="seconds">--</div>
+        <div class="time-label">Saniye</div>
+      </div>
     </div>
-    <div class="time-block">
-      <div class="time-value" id="hours">--</div>
-      <div class="time-label">Saat</div>
-    </div>
-    <div class="time-block">
-      <div class="time-value" id="minutes">--</div>
-      <div class="time-label">Dakika</div>
-    </div>
-    <div class="time-block">
-      <div class="time-value" id="seconds">--</div>
-      <div class="time-label">Saniye</div>
-    </div>
+    <div class="quote" id="quote-box">"Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız."</div>
   </div>
 
-  <div class="quote" id="quote-box">"Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız."</div>
+  <section class="faq">
+    <details>
+      <summary>YKS 2026 ne zaman?</summary>
+      <p>2026 YKS'nin birinci oturumu TYT, 20 Haziran 2026 Cumartesi günü saat 10:15'te yapılacaktır.</p>
+    </details>
+    <details>
+      <summary>TYT ve AYT nedir?</summary>
+      <p>TYT (Temel Yeterlilik Testi) ve AYT (Alan Yeterlilik Testi), Türkiye'deki üniversiteye giriş sınavlarının iki temel aşamasıdır.</p>
+    </details>
+    <details>
+      <summary>Sınava ne kadar kaldı?</summary>
+      <p>Yukarıdaki sayaç, YKS 2026 sınavına kalan gün, saat, dakika ve saniyeyi gösterir.</p>
+    </details>
+    <details>
+      <summary>Nasıl çalışmalıyım?</summary>
+      <p>Sınava hazırlık sürecinde düzenli tekrar, deneme sınavları ve zaman yönetimi çok önemlidir.</p>
+    </details>
+  </section>
 
   <script>
     const d = document;
@@ -182,7 +270,6 @@
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Theme toggle logic
     const icon = document.getElementById("theme-icon");
     const body = document.body;
     if (!localStorage.getItem("theme")) {
@@ -205,7 +292,10 @@
       icon.textContent = current === "dark" ? "☀️" : "🌙";
     }
 
-    // Motivational quotes
+    function toggleMenu() {
+      document.getElementById('menu').classList.toggle('open');
+    }
+
     const quotes = [
       "Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız.",
       "Düşünmek kolaydır, yapmak zordur. Ama en zoru düşündüğünü eyleme geçirmektir.",
@@ -218,5 +308,4 @@
   </script>
 </body>
 </html>
-
 
