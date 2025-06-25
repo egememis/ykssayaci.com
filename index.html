@@ -1,5 +1,3 @@
-this is our code now:
-
 <!DOCTYPE html>
 <html lang="tr">
 <head>
@@ -22,6 +20,10 @@ this is our code now:
     gtag('js', new Date());
     gtag('config', 'G-Q8L6R291RM');
   </script>
+
+  <!-- Google Ads -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3062364074083908"
+    crossorigin="anonymous"></script>
 
   <style>
     html, body {
@@ -46,22 +48,24 @@ this is our code now:
     .menu-toggle, .theme-toggle {
       position: absolute;
       top: 20px;
-      padding: 8px 16px;
-      border-radius: 16px;
-      border: none;
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
       font-size: 1rem;
+      font-weight: bold;
       cursor: pointer;
       z-index: 1001;
       display: flex;
       align-items: center;
       gap: 8px;
-      background-color: rgba(255, 255, 255, 0.1);
-      transition: background-color 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.08);
+      color: inherit;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      transition: background-color 0.3s ease, border 0.3s ease;
     }
 
     .menu-toggle {
       left: 20px;
-      color: inherit;
     }
 
     .theme-toggle {
@@ -69,8 +73,8 @@ this is our code now:
       user-select: none;
     }
 
-    .theme-toggle:hover, .menu-toggle:hover {
-      background-color: rgba(255, 255, 255, 0.2);
+    .menu-toggle:hover, .theme-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.15);
     }
 
     .menu-panel {
@@ -195,12 +199,12 @@ this is our code now:
       line-height: 1.6;
     }
   </style>
-
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3062364074083908"
-     crossorigin="anonymous"></script>
-  
 </head>
 <body>
+  <!-- Google Ads (optional location) -->
+  <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-3062364074083908" data-ad-slot="YOUR_SLOT_ID" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
+
   <button class="menu-toggle" onclick="toggleMenu()">Araçlar</button>
   <div class="menu-panel" id="menu">
     <a href="#">Placeholder 1</a>
@@ -218,22 +222,10 @@ this is our code now:
   <div class="hero">
     <h1>YKS 2026'ya Kalan Süre</h1>
     <div class="countdown">
-      <div class="time-block">
-        <div class="time-value" id="days">--</div>
-        <div class="time-label">Gün</div>
-      </div>
-      <div class="time-block">
-        <div class="time-value" id="hours">--</div>
-        <div class="time-label">Saat</div>
-      </div>
-      <div class="time-block">
-        <div class="time-value" id="minutes">--</div>
-        <div class="time-label">Dakika</div>
-      </div>
-      <div class="time-block">
-        <div class="time-value" id="seconds">--</div>
-        <div class="time-label">Saniye</div>
-      </div>
+      <div class="time-block"><div class="time-value" id="days">--</div><div class="time-label">Gün</div></div>
+      <div class="time-block"><div class="time-value" id="hours">--</div><div class="time-label">Saat</div></div>
+      <div class="time-block"><div class="time-value" id="minutes">--</div><div class="time-label">Dakika</div></div>
+      <div class="time-block"><div class="time-value" id="seconds">--</div><div class="time-label">Saniye</div></div>
     </div>
     <div class="quote" id="quote-box">"Başlamak için mükemmel olmanıza gerek yok, ama mükemmel olmak için başlamalısınız."</div>
   </div>
@@ -270,13 +262,10 @@ this is our code now:
     function updateCountdown() {
       const now = new Date();
       const diff = examDate - now;
-
       if (diff <= 0) {
-        countdown.days.textContent = countdown.hours.textContent =
-        countdown.minutes.textContent = countdown.seconds.textContent = "00";
+        countdown.days.textContent = countdown.hours.textContent = countdown.minutes.textContent = countdown.seconds.textContent = "00";
         return;
       }
-
       countdown.days.textContent = Math.floor(diff / (1000 * 60 * 60 * 24));
       countdown.hours.textContent = Math.floor((diff / (1000 * 60 * 60)) % 24);
       countdown.minutes.textContent = Math.floor((diff / (1000 * 60)) % 60);
@@ -286,13 +275,12 @@ this is our code now:
     setInterval(updateCountdown, 1000);
     updateCountdown();
 
-    // Sistem temasını algıla ve kaydet
+    // Theme handling
     const icon = document.getElementById("theme-icon");
     const body = document.body;
     if (!localStorage.getItem("theme")) {
       const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      const defaultTheme = prefersDark ? "dark" : "light";
-      localStorage.setItem("theme", defaultTheme);
+      localStorage.setItem("theme", prefersDark ? "dark" : "light");
     }
     body.classList.add(localStorage.getItem("theme"));
     updateIcon();
@@ -307,8 +295,7 @@ this is our code now:
     }
 
     function updateIcon() {
-      const current = body.classList.contains("dark") ? "dark" : "light";
-      icon.textContent = current === "dark" ? "☀️" : "🌙";
+      icon.textContent = body.classList.contains("dark") ? "☀️" : "🌙";
     }
 
     function toggleMenu() {
@@ -322,8 +309,7 @@ this is our code now:
       "Bugünün işini yarına bırakma, çünkü sınav tarihi ertelenmez.",
       "İmkansız, yalnızca zaman alan bir kelimedir."
     ];
-    const quoteBox = document.getElementById("quote-box");
-    quoteBox.textContent = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById("quote-box").textContent = quotes[Math.floor(Math.random() * quotes.length)];
   </script>
 </body>
 </html>
